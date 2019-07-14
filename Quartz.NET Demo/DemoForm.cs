@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Quartz.Impl;
+using Quartz.Logging;
+using Quartz.NET_Demo.Services;
 using Quartz.NET_Demo.Services.Jobs;
 
 namespace Quartz.NET_Demo
@@ -28,11 +30,14 @@ namespace Quartz.NET_Demo
         {
             this.InitializeComponent();
 
+            LogProvider.SetCurrentLogProvider(new QuartzLogProvider());
+
             this.FormClosed += (s, e) => this.scheduler.Shutdown();
 
             this.factory = new StdSchedulerFactory();
             this.scheduler = this.factory.GetScheduler().Result;
             this.scheduler.Start();
+
 
             IJobDetail job = JobBuilder.Create()
                 .OfType<DateTimeJob>()
