@@ -38,7 +38,6 @@ namespace Quartz.NET_Demo
             this.scheduler = this.factory.GetScheduler().Result;
             this.scheduler.Start();
 
-
             IJobDetail job = JobBuilder.Create()
                 .OfType<DateTimeJob>()
                 .WithIdentity("作业1", "分组1")
@@ -48,7 +47,10 @@ namespace Quartz.NET_Demo
             ITrigger trigger = TriggerBuilder.Create()
                 .WithIdentity("触发器1", "分组1")
                 .WithDescription("我是分组1里的触发器1")
-                .WithCronSchedule("0/5 * * * * ?")
+                .WithSimpleSchedule(j => j
+                    .WithIntervalInSeconds(5)
+                    .RepeatForever())
+                // .WithCronSchedule("0/5 * * * * ?")
                 .Build();
 
             this.scheduler.ScheduleJob(job, trigger);
