@@ -28,6 +28,8 @@ namespace Quartz.NET_Demo
         {
             this.InitializeComponent();
 
+            this.FormClosed += (s, e) => this.scheduler.Shutdown();
+
             this.factory = new StdSchedulerFactory();
             this.scheduler = this.factory.GetScheduler().Result;
             this.scheduler.Start();
